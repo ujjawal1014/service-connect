@@ -35,15 +35,22 @@ export const SocketProvider = ({ children }: { children: ReactNode }) => {
     }
 
     // Initialize socket connection
-    const newSocket = io("http://localhost:3000", {
+    const newSocket = io("https://service-connect-s65a.onrender.com", {
       auth: {
         token: localStorage.getItem("token"),
       },
+      withCredentials: true,
+      transports: ['websocket', 'polling']
     })
 
     newSocket.on("connect", () => {
       console.log("Socket connected")
       setConnected(true)
+    })
+
+    newSocket.on("connect_error", (error) => {
+      console.error("Socket connection error:", error)
+      setConnected(false)
     })
 
     newSocket.on("disconnect", () => {
