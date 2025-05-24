@@ -1,7 +1,7 @@
 "use client"
 
 import React, { useState, useEffect } from "react"
-import axios from "axios"
+import axiosInstance from "../config/axios"
 import { useAuth } from "../context/AuthContext"
 import { useSocket } from "../context/SocketContext"
 import { API_URL } from '../config/api'
@@ -52,11 +52,11 @@ const UserDashboard = () => {
       if (!user) return;
       try {
         // Fetch user's service requests
-        const requestsRes = await axios.get(`${API_URL}/service-requests/user/${user._id}`)
+        const requestsRes = await axiosInstance.get(`/service-requests/user/${user._id}`)
         setServiceRequests(requestsRes.data)
 
         // Fetch user's jobs (both active and completed)
-        const jobsRes = await axios.get(`${API_URL}/jobs/user/${user._id}`)
+        const jobsRes = await axiosInstance.get(`/jobs/user/${user._id}`)
         setActiveJobs(jobsRes.data.filter((job: Job) => job.status !== "completed"))
         setCompletedJobs(jobsRes.data.filter((job: Job) => job.status === "completed"))
 
@@ -176,7 +176,7 @@ const UserDashboard = () => {
     const fetchWorkerQrCode = async () => {
       if (showJobModal && selectedJob && selectedJob.status === 'completed') {
         try {
-          const res = await axios.get(`${API_URL}/users/profile/${selectedJob.workerId}`)
+          const res = await axiosInstance.get(`/users/profile/${selectedJob.workerId}`)
           setWorkerQrCode(res.data.qrCodeUrl)
         } catch (err) {
           console.error("Failed to fetch worker QR code:", err)
@@ -191,7 +191,7 @@ const UserDashboard = () => {
 
   const handleCancelRequest = async (requestId) => {
     try {
-      await axios.delete(`${API_URL}/service-requests/${requestId}`)
+      await axiosInstance.delete(`/service-requests/${requestId}`)
       setServiceRequests(serviceRequests.filter((req) => req._id !== requestId))
     } catch (err) {
       setError("Failed to cancel request. Please try again.")
@@ -434,7 +434,7 @@ const UserDashboard = () => {
                         return
                       }
                       try {
-                        await axios.patch(`${API_URL}/jobs/${selectedJob._id}/review`, {
+                        await axiosInstance.patch(`/jobs/${selectedJob._id}/review`, {
                           rating: reviewRating,
                           comment: reviewText,
                         })
@@ -491,7 +491,7 @@ const UserDashboard = () => {
                       className="mt-6 w-full bg-gradient-to-r from-green-700 to-green-900 text-white px-6 py-2 rounded-md font-medium transition shadow-lg"
                       onClick={async () => {
                         try {
-                          await axios.patch(`${API_URL}/jobs/${selectedJob._id}/payment-done`)
+                          await axiosInstance.patch(`/jobs/${selectedJob._id}/payment-done`)
                           // Update selectedJob state locally after successful payment
                           setSelectedJob(prev => prev ? { ...prev, paymentStatus: "done" } : null)
                         } catch (err) {
