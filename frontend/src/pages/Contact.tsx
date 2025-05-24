@@ -1,5 +1,6 @@
 import React, { useState } from "react"
 import { FaUser, FaEnvelope, FaPhone, FaMapMarkerAlt, FaCommentDots, FaFacebook, FaTwitter, FaInstagram, FaLinkedin } from "react-icons/fa"
+import { API_URL } from '../config/api';
 
 const Contact = () => {
   const [name, setName] = useState("")
@@ -17,7 +18,7 @@ const Contact = () => {
     setError("")
     setSuccess("")
     try {
-      const res = await fetch("http://localhost:3000/api/contact", {
+      const res = await fetch(`${API_URL}/contact`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ name, email, phone, address, reason }),

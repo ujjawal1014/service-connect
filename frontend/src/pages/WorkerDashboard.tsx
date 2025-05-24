@@ -4,6 +4,7 @@ import React, { useState, useEffect } from "react"
 import axios from "axios"
 import { useAuth } from "../context/AuthContext"
 import { useSocket } from "../context/SocketContext"
+import { API_URL } from '../config/api'
 
 // Add types for jobs and service requests
 interface ServiceRequest {
@@ -50,11 +51,11 @@ const WorkerDashboard = () => {
     const fetchData = async () => {
       try {
         // Fetch available service requests
-        const requestsRes = await axios.get("http://localhost:3000/api/service-requests")
+        const requestsRes = await axios.get(`${API_URL}/service-requests`)
         setAvailableRequests(requestsRes.data)
 
         // Fetch worker's active jobs
-        const jobsRes = await axios.get(`http://localhost:3000/api/jobs/worker/${user._id}`)
+        const jobsRes = await axios.get(`${API_URL}/jobs/worker/${user._id}`)
         setActiveJobs(jobsRes.data.filter((job: Job) => job.status !== "completed"))
         setCompletedJobs(jobsRes.data.filter((job: Job) => job.status === "completed"))
 
@@ -178,7 +179,7 @@ const WorkerDashboard = () => {
     if (!user) return
     try {
       const res = await axios.post(
-        `http://localhost:3000/api/service-requests/${requestId}/accept`,
+        `${API_URL}/service-requests/${requestId}/accept`,
         {
           workerId: user._id,
           workerName: user.name,
@@ -204,7 +205,7 @@ const WorkerDashboard = () => {
   const handleMarkAsCompleted = async (jobId: string) => {
     if (!user) return;
     try {
-      const response = await axios.patch(`http://localhost:3000/api/jobs/${jobId}/complete`);
+      const response = await axios.patch(`${API_URL}/jobs/${jobId}/complete`);
       const updatedJob = response.data;
       // The socket listener for 'job-status-updated' will handle updating the state
     } catch (err) {
@@ -215,7 +216,7 @@ const WorkerDashboard = () => {
   const handleUpdateJobStatus = async (jobId: string, newStatus: string) => {
     if (!user) return
     try {
-      const response = await axios.patch(`http://localhost:3000/api/jobs/${jobId}/${newStatus}`)
+      const response = await axios.patch(`${API_URL}/jobs/${jobId}/${newStatus}`)
       const updatedJob = response.data
 
       // Optimistic update
@@ -235,7 +236,7 @@ const WorkerDashboard = () => {
     } catch (err) {
       setError("Failed to update job status. Please try again.")
       // Revert optimistic update on error
-      const response = await axios.get(`http://localhost:3000/api/jobs/${jobId}`)
+      const response = await axios.get(`${API_URL}/jobs/${jobId}`)
       const job = response.data
       if (job.status === "completed") {
         setActiveJobs((prev) => prev.filter((j) => j._id !== jobId))
@@ -385,7 +386,7 @@ const WorkerDashboard = () => {
                             className="mt-4 bg-gradient-to-r from-green-700 to-green-900 text-white px-6 py-2 rounded-md font-medium transition shadow-lg hover:from-green-800 hover:to-green-950 hover:scale-105"
                             onClick={async () => {
                               try {
-                                await axios.patch(`http://localhost:3000/api/jobs/${job._id}/complete`);
+                                await axios.patch(`${API_URL}/jobs/${job._id}/complete`);
                                 // Optimistically update state
                                 setActiveJobs(prevActiveJobs => prevActiveJobs.filter(activeJob => activeJob._id !== job._id));
                                 setCompletedJobs(prevCompletedJobs => [...prevCompletedJobs, { ...job, status: "completed" }]);

@@ -3,6 +3,7 @@
 import React from "react"
 import { createContext, useContext, useState, useEffect, type ReactNode } from "react"
 import axios from "axios"
+import { API_URL } from '../config/api';
 
 interface User {
   _id: string
@@ -42,7 +43,7 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
 
         if (token) {
           axios.defaults.headers.common["Authorization"] = `Bearer ${token}`
-          const res = await axios.get("http://localhost:3000/api/auth/me")
+          const res = await axios.get(`${API_URL}/auth/me`)
           setUser(res.data)
         }
       } catch (error) {
@@ -58,7 +59,7 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
 
   const login = async (email: string, password: string) => {
     try {
-      const res = await axios.post("http://localhost:3000/api/auth/login", {
+      const res = await axios.post(`${API_URL}/auth/login`, {
         email,
         password,
       })
@@ -76,7 +77,7 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
 
   const register = async (name: string, email: string, password: string, role: "User" | "Worker", qrCodeUrl?: string) => {
     try {
-      const res = await axios.post("http://localhost:3000/api/auth/register", {
+      const res = await axios.post(`${API_URL}/auth/register`, {
         name,
         email,
         password,

@@ -7,6 +7,7 @@ import { useAuth } from "../context/AuthContext"
 import { FaUser, FaEnvelope, FaLock, FaUserTie, FaTools } from "react-icons/fa"
 import axios from "axios"
 import { IconType } from "react-icons"
+import { API_URL } from '../config/api'
 
 const Register = () => {
   const [name, setName] = useState("")
@@ -87,7 +88,7 @@ const Register = () => {
         formData.append('file', qrCodeFile)
 
         // Upload file to server
-        const uploadRes = await axios.post('http://localhost:3000/api/upload', formData, {
+        const uploadRes = await axios.post(`${API_URL}/upload`, formData, {
           headers: {
             'Content-Type': 'multipart/form-data'
           }

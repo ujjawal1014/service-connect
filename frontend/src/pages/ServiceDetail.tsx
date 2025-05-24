@@ -6,6 +6,7 @@ import axios from "axios";
 import { useAuth } from "../context/AuthContext";
 import { FaTools, FaBolt, FaShower, FaBroom, FaLeaf, FaPaintBrush, FaTruck, FaWrench } from "react-icons/fa";
 import { IconType } from "react-icons";
+import { API_URL } from '../config/api';
 
 interface ServiceCategory {
     id: number;
@@ -83,7 +84,7 @@ const ServiceDetail = () => {
       // const { socket } = useSocket(); // Uncomment if socket is needed here
       // if (socket) { socket.emit("new-service-request", res.data); }
 
-      await axios.post("http://localhost:3000/api/service-requests", serviceRequest);
+      await axios.post(`${API_URL}/service-requests`, serviceRequest);
 
       setFormSuccess("Your service request has been submitted successfully!")
       setDescription("")

@@ -5,6 +5,7 @@ import axios from "axios"
 import { useAuth } from "../context/AuthContext"
 import { useSocket } from "../context/SocketContext"
 import { FaTools, FaBolt, FaShower, FaBroom, FaLeaf, FaPaintBrush, FaTruck, FaWrench } from "react-icons/fa"
+import { API_URL } from '../config/api'
 
 const serviceCategories = [
   { id: 1, name: "Home Repair", icon: <FaTools size={40} />, description: "Expert repairs for your home maintenance needs" },
@@ -35,7 +36,7 @@ const Services = () => {
   useEffect(() => {
     const fetchServices = async () => {
       try {
-        const res = await axios.get("http://localhost:3000/api/services")
+        const res = await axios.get(`${API_URL}/services`)
         setServices(res.data)
         setLoading(false)
       } catch (err) {
@@ -78,7 +79,7 @@ const Services = () => {
         userName: user.name,
       }
 
-      const res = await axios.post("http://localhost:3000/api/service-requests", serviceRequest)
+      const res = await axios.post(`${API_URL}/service-requests`, serviceRequest)
 
       setFormSuccess("Your service request has been submitted successfully!")
       setSelectedCategory("")

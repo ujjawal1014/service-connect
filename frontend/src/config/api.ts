@@ -1,0 +1,1 @@
+export const API_URL = 'https://service-connect-s65a.onrender.com/api'; 
