@@ -1,6 +1,20 @@
-# <img src="https://img.icons8.com/color/48/000000/handshake.png" width="36" style="vertical-align:middle"/> ServiceConnect
+<p align="center">
+  <span style="font-size:2.5rem; font-weight:bold; letter-spacing:2px;">ServiceConnect</span>
+</p>
 
-> **Bridging People & Possibilities. Empowering Local Businesses.**
+<h3 align="center">Bridging People & Possibilities</h3>
+<p align="center"><i>Empowering Local Businesses. Connecting You Instantly.</i></p>
+
+<p align="center">
+  <img src="https://img.shields.io/badge/Platform-Local%20Services-blue" />
+  <img src="https://img.shields.io/badge/Status-Active-brightgreen" />
+  <img src="https://img.shields.io/badge/Built%20With-React%20%7C%20Node.js%20%7C%20MongoDB-blueviolet" />
+</p>
+
+---
+
+> <b>🚀 Find trusted professionals for any job, anytime, anywhere.<br>
+> 💡 Empowering local workers and making your life easier!</b>
 
 ---
 
